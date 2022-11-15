@@ -1,0 +1,8 @@
+bootstrap_menu:
+  menus:
+    main:
+      items:
+        todos:
+          label: 'Tasks'
+          route: 'todo_list'
+

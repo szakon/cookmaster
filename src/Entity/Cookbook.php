@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\CookbookRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CookbookRepository::class)]
@@ -28,6 +30,18 @@ class Cookbook
     #[ORM\ManyToOne(inversedBy: 'cookbooks')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Bookshelf $shelf = null;
+
+    #[ORM\ManyToMany(targetEntity: CuisineType::class, inversedBy: 'cookbooks')]
+    private $cuisinetype;
+
+    #[ORM\ManyToMany(targetEntity: Kitchen::class, mappedBy: 'book')]
+    private $kitchens;
+
+    public function __construct()
+    {
+        $this->cuisinetype = new ArrayCollection();
+        $this->kitchens = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -90,6 +104,61 @@ class Cookbook
     public function setShelf(?Bookshelf $shelf): self
     {
         $this->shelf = $shelf;
+
+        return $this;
+    }
+
+    public function __toString() {
+        return $this->title . " (Author: " . $this->author . ", Cuisine: " . $this->cuisine . ", year: " . $this->year . ")";
+    }
+
+    /**
+     * @return Collection<int, CuisineType>
+     */
+    public function getCuisinetype(): Collection
+    {
+        return $this->cuisinetype;
+    }
+
+    public function addCuisinetype(CuisineType $cuisinetype): self
+    {
+        if (!$this->cuisinetype->contains($cuisinetype)) {
+            $this->cuisinetype[] = $cuisinetype;
+        }
+
+        return $this;
+    }
+
+    public function removeCuisinetype(CuisineType $cuisinetype): self
+    {
+        $this->cuisinetype->removeElement($cuisinetype);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Kitchen>
+     */
+    public function getKitchens(): Collection
+    {
+        return $this->kitchens;
+    }
+
+    public function addKitchen(Kitchen $kitchen): self
+    {
+        if (!$this->kitchens->contains($kitchen)) {
+            $this->kitchens[] = $kitchen;
+            $kitchen->addBook($this);
+        }
+
+        return $this;
+    }
+
+    public function removeKitchen(Kitchen $kitchen): self
+    {
+        if ($this->kitchens->removeElement($kitchen)) {
+            $kitchen->removeBook($this);
+        }
 
         return $this;
     }

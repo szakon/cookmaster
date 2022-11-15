@@ -21,12 +21,16 @@ class Member
     #[ORM\Column(length: 255)]
     private ?string $bio = null;
 
-    #[ORM\OneToMany(mappedBy: 'member', targetEntity: Bookshelf::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'memberOld', targetEntity: Bookshelf::class, orphanRemoval: true, cascade: ["persist"])]
     private Collection $bookshelf;
+
+    #[ORM\OneToMany(mappedBy: 'Owner', targetEntity: Kitchen::class)]
+    private $kitchens;
 
     public function __construct()
     {
         $this->bookshelf = new ArrayCollection();
+        $this->kitchens = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -89,5 +93,35 @@ class Member
     }
     public function __toString() {
         return $this->title . " (Author: " . $this->author . ", Cuisine: " . $this->cuisine . ", year: " . $this->year . ")";
+    }
+
+    /**
+     * @return Collection<int, Kitchen>
+     */
+    public function getKitchens(): Collection
+    {
+        return $this->kitchens;
+    }
+
+    public function addKitchen(Kitchen $kitchen): self
+    {
+        if (!$this->kitchens->contains($kitchen)) {
+            $this->kitchens[] = $kitchen;
+            $kitchen->setOwner($this);
+        }
+
+        return $this;
+    }
+
+    public function removeKitchen(Kitchen $kitchen): self
+    {
+        if ($this->kitchens->removeElement($kitchen)) {
+            // set the owning side to null (unless already changed)
+            if ($kitchen->getOwner() === $this) {
+                $kitchen->setOwner(null);
+            }
+        }
+
+        return $this;
     }
 }

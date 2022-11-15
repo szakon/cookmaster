@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+    {# source: https://stackoverflow.com/a/65082524/1814910 #}
+    <ul>
+        {% for [object] in field.value %}
+        {%- set url = ea_url()
+            .setController('App\\Controller\\Admin\\[Object]CrudController')
+            .setAction('detail')
+            .setEntityId([object].id)
+        -%}
+        <li>
+            <a href="{{ url }}">
+             {{ [object] }}
+            </a>
+        </li>
+        {% else %}
+    </ul>
+    <span class="badge badge-secondary">None</span>
+    <ul>
+        {% endfor %}
+    </ul>
+
+</html>
