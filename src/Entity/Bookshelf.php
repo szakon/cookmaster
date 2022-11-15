@@ -21,6 +21,10 @@ class Bookshelf
     #[ORM\OneToMany(mappedBy: 'shelf', targetEntity: Cookbook::class, orphanRemoval: true, cascade: ["persist"])]
     private Collection $cookbooks;
 
+    #[ORM\ManyToOne(inversedBy: 'bookshelf')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Member $member = null;
+
     public function __construct()
     {
         $this->cookbooks = new ArrayCollection();
@@ -71,5 +75,21 @@ class Bookshelf
         }
 
         return $this;
+    }
+
+    public function getMember(): ?Member
+    {
+        return $this->member;
+    }
+
+    public function setMember(?Member $member): self
+    {
+        $this->member = $member;
+
+        return $this;
+    }
+
+    public function __toString() {
+        return "This is the shelf: " . $this->Shelf;
     }
 }
