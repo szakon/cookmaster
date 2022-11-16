@@ -4,5 +4,5 @@ bootstrap_menu:
       items:
         todos:
           label: 'Tasks'
-          route: 'todo_list'
+          route: 'app_admin_dashboard_index'
 

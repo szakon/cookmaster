@@ -2,116 +2,79 @@
 
 namespace App\Controller;
 
-use Doctrine\Persistence\ManagerRegistry;
+use App\Entity\Bookshelf;
+use App\Form\BookshelfType;
+use App\Repository\BookshelfRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Entity\Bookshelf;
 
+#[Route('/bookshelf')]
 class BookshelfController extends AbstractController
 {
-    /**
-     * Controleur Bookshelf
-     * @Route("/bookshelf")
-     */
-    public function indexbookshelf(): Response
+    #[Route('/', name: 'app_bookshelf_index', methods: ['GET'])]
+    public function index(BookshelfRepository $bookshelfRepository): Response
     {
-        $htmlpage = '<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title>Welcome!</title>
-    </head>
-    <body>
-        <h1>Welcome</h1>
-            
-    <p>Welcome to our bookshelf</p>
-    </body>
-</html>';
-        return new Response(
-            $htmlpage,
-            Response::HTTP_OK,
-            array('content-type' => 'text/html')
-        );
+        return $this->render('bookshelf/index.html.twig', [
+            'bookshelves' => $bookshelfRepository->findAll(),
+        ]);
     }
 
-    /**
-     * Lists of all bookshop entities
-     *
-     * @Route("/bookshelflist", name = "bookshelf_list", methods = "GET")
-     * @Route("/bookshelfindex", name = "bookshelf_index", methods = "GET")
-     */
-
-    public function listAction(ManagerRegistry $doctrine): Response
+    #[Route('/new', name: 'app_bookshelf_new', methods: ['GET', 'POST'])]
+    public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
-        $htmlpage = '<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title>bookshelf list!</title>
-    </head>
-    <body>
-        <h1>bookshelf list</h1>
-        <p>Here are all your bookshelves:</p>
-        <ul>';
+        $bookshelf = new Bookshelf();
+        $form = $this->createForm(BookshelfType::class, $bookshelf);
+        $form->handleRequest($request);
 
-        $entityManager= $doctrine->getManager();
-        $bookshelves = $entityManager->getRepository(Bookshelf::class)->findAll();
-        foreach($bookshelves as $bookshelf) {
-            $htmlpage .= '<li>
-            <a href="/bookshelf/'.$bookshelf->getId().'">'.$bookshelf->getShelf().' "('.$bookshelf->getId().')"</a></li>';
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($bookshelf);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_bookshelf_index', [], Response::HTTP_SEE_OTHER);
         }
-        $htmlpage .= '</ul>';
 
-        $htmlpage .= '</body></html>';
-
-        return new Response(
-            $htmlpage,
-            Response::HTTP_OK,
-            array('content-type' => 'text/html')
-        );
+        return $this->renderForm('bookshelf/new.html.twig', [
+            'bookshelf' => $bookshelf,
+            'form' => $form,
+        ]);
     }
 
-    /**
-     * Show a bookshelf
-     *
-     * @Route("/bookshelf/{id}", name="bookshelf_show", requirements={"id"="\d+"})
-     *    note that the id must be an integer, above
-     *
-     * @param Integer $id
-     */
-    public function show(ManagerRegistry $doctrine, $id)
+    #[Route('/{id}', name: 'app_bookshelf_show', methods: ['GET'])]
+    public function show(Bookshelf $bookshelf): Response
     {
-        $bookshelfRepo = $doctrine->getRepository(Bookshelf::class);
-        $bookshelf = $bookshelfRepo->find($id);
-
-        if (!$bookshelf) {
-            throw $this->createNotFoundException('The bookshelf does not exist');
-        }
-
-        $res = '<!DOCTYPE html>
-    <html>
-    <head>
-    <meta charset="UTF-8">
-    <title>bookshelf '.$bookshelf->getShelf().' details</title>
- 
-</head>
-<body>
-<h2> '.$bookshelf->getShelf().' : </h2>
-<ul><dl>';
-
-        //Author, cuisine, year
-        foreach($bookshelf->getCookBooks() as $cookbook) {
-            $res .= '<dt>COOKBOOK</dt><dd>' . $cookbook->__toString() . '</dd>';
-        }
-        $res .= '</dl>';
-        $res .= '</ul></body></html>';
-
-
-        $res .= '<p/><a href="' . $this->generateUrl('bookshelf_index') . '">Back</a>';
-
-        return new Response('<html><body>'. $res . '</body></html>');
+        return $this->render('bookshelf/show.html.twig', [
+            'bookshelf' => $bookshelf,
+        ]);
     }
 
+    #[Route('/{id}/edit', name: 'app_bookshelf_edit', methods: ['GET', 'POST'])]
+    public function edit(Request $request, Bookshelf $bookshelf, EntityManagerInterface $entityManager): Response
+    {
+        $form = $this->createForm(BookshelfType::class, $bookshelf);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_bookshelf_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('bookshelf/edit.html.twig', [
+            'bookshelf' => $bookshelf,
+            'form' => $form,
+        ]);
+    }
+
+    #[Route('/{id}', name: 'app_bookshelf_delete', methods: ['POST'])]
+    public function delete(Request $request, Bookshelf $bookshelf, EntityManagerInterface $entityManager): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$bookshelf->getId(), $request->request->get('_token'))) {
+            $entityManager->remove($bookshelf);
+            $entityManager->flush();
+        }
+
+        return $this->redirectToRoute('app_bookshelf_index', [], Response::HTTP_SEE_OTHER);
+    }
 }
-

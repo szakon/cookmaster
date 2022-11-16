@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Bookshelf{% endblock %}
+
+{% block body %}
+    <h1>Create new Bookshelf</h1>
+
+    {{ include('bookshelf/_form.html.twig') }}
+
+    <a href="{{ path('app_bookshelf_index') }}">back to list</a>
+{% endblock %}

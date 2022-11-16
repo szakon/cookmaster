@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Cookbook{% endblock %}
+
+{% block body %}
+    <h1>Edit Cookbook</h1>
+
+    {{ include('cookbook/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_cookbook_index') }}">back to list</a>
+
+    {{ include('cookbook/_delete_form.html.twig') }}
+{% endblock %}

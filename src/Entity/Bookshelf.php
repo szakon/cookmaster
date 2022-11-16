@@ -21,7 +21,7 @@ class Bookshelf
     #[ORM\OneToMany(mappedBy: 'shelf', targetEntity: Cookbook::class, orphanRemoval: true, cascade: ["persist"])]
     private Collection $cookbooks;
 
-    #[ORM\ManyToOne(inversedBy: 'bookshelf')]
+    #[ORM\ManyToOne(inversedBy: 'bookshelfold')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Member $member = null;
 

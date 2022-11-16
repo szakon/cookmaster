@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Kitchen index{% endblock %}
+
+{% block body %}
+    <h1>Kitchen index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Published</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for kitchen in kitchens %}
+            <tr>
+                <td>{{ kitchen.id }}</td>
+                <td>{{ kitchen.name }}</td>
+                <td>{{ kitchen.published ? 'Yes' : 'No' }}</td>
+                <td>
+                    <a href="{{ path('app_kitchen_show', {'id': kitchen.id}) }}">show</a>
+                    <a href="{{ path('app_kitchen_edit', {'id': kitchen.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_kitchen_new') }}">Create new</a>
+{% endblock %}
