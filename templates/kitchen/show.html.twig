@@ -26,5 +26,14 @@
 
     <a href="{{ path('app_kitchen_edit', {'id': kitchen.id}) }}">edit</a>
 
+    <h2>Cookbooks</h2>
+    <ul>
+        {% for cookbook in kitchen.book %}
+            <li>
+                <a href="{{ path('app_kitchen_cookbook_show', {'kitchen_id': kitchen.id, 'cookbook_id' : cookbook.id}) }}">{{ cookbook }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+
     {{ include('kitchen/_delete_form.html.twig') }}
 {% endblock %}

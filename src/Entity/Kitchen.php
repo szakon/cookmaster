@@ -85,7 +85,7 @@ class Kitchen
     public function addBook(Cookbook $book): self
     {
         if (!$this->book->contains($book)) {
-            $this->book[] = $book;
+            $this->book->add($book);
         }
 
         return $this;

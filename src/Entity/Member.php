@@ -92,7 +92,7 @@ class Member
         return $this;
     }
     public function __toString() {
-        return $this->title . " (Author: " . $this->author . ", Cuisine: " . $this->cuisine . ", year: " . $this->year . ")";
+        return $this->Name;
     }
 
     /**

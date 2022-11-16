@@ -3,13 +3,18 @@
 namespace App\Controller;
 
 use App\Entity\Kitchen;
+use App\Entity\Cookbook;
 use App\Form\KitchenType;
 use App\Repository\KitchenRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Doctrine\ORM\EntityManagerInterface;
 
+
+#[Route('/kitchen')]
 #[Route('/kitchen')]
 class KitchenController extends AbstractController
 {
@@ -75,4 +80,27 @@ class KitchenController extends AbstractController
 
         return $this->redirectToRoute('app_kitchen_index', [], Response::HTTP_SEE_OTHER);
     }
+
+
+    #[Route('/{kitchen_id}/cookbook/{cookbook_id}', name: "app_kitchen_cookbook_show", methods:['GET'])]
+    #[ParamConverter('kitchen', options: ['id' => 'kitchen_id'])]
+    #[ParamConverter('cookbook', options: ['id' => 'cookbook_id'])]
+    public function cookbookShow(Kitchen $kitchen, Cookbook $cookbook): Response
+    {
+        if(! $kitchen->getBook()->contains($cookbook)) {
+            throw $this->createNotFoundException("Couldn't find such a cookbook in this kitchen!");
+        }
+
+        if(! $kitchen->isPublished()) {
+            throw $this->createAccessDeniedException("You cannot access the requested ressource!");
+        }
+
+        return $this->render('kitchen/cookbook_show.html.twig', [
+            'cookbook' => $cookbook,
+            'kitchen' => $kitchen
+        ]);
+    }
+
+
+
 }

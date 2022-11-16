@@ -2,7 +2,17 @@ bootstrap_menu:
   menus:
     main:
       items:
+        members:
+          label: 'members'
+          route: 'app_member_index'
+        kitchens:
+          label: 'kitchen'
+          route: 'app_kitchen_index'
         todos:
-          label: 'Tasks'
-          route: 'app_admin_dashboard_index'
+          label: 'bookshelves'
+          route: 'app_bookshelf_index'
+        books:
+          label: 'cookbooks'
+          route: 'app_cookbook_index'
+
 

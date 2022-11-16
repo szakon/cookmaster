@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Doctrine\ORM\EntityManagerInterface;
 
 #[Route('/cookbook')]
 class CookbookController extends AbstractController
@@ -22,15 +23,14 @@ class CookbookController extends AbstractController
     }
 
     #[Route('/new', name: 'app_cookbook_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, CookbookRepository $cookbookRepository): Response
     {
         $cookbook = new Cookbook();
         $form = $this->createForm(CookbookType::class, $cookbook);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($cookbook);
-            $entityManager->flush();
+            $cookbookRepository->save($cookbook, true);
 
             return $this->redirectToRoute('app_cookbook_index', [], Response::HTTP_SEE_OTHER);
         }

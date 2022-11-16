@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Bookshelf;
 use App\Form\BookshelfType;
 use App\Repository\BookshelfRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,15 +23,14 @@ class BookshelfController extends AbstractController
     }
 
     #[Route('/new', name: 'app_bookshelf_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, BookshelfRepository $bookshelfRepository): Response
     {
         $bookshelf = new Bookshelf();
         $form = $this->createForm(BookshelfType::class, $bookshelf);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($bookshelf);
-            $entityManager->flush();
+            $bookshelfRepository->save($bookshelf, true);
 
             return $this->redirectToRoute('app_bookshelf_index', [], Response::HTTP_SEE_OTHER);
         }
