@@ -7,5 +7,5 @@
 
     {{ include('bookshelf/_form.html.twig') }}
 
-    <a href="{{ path('app_bookshelf_index') }}">back to list</a>
+    <a href="{{ path('app_member_show', {'id' : bookshelf.member.id}) }}"> back to member </a>
 {% endblock %}

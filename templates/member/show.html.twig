@@ -19,8 +19,24 @@
                 <th>Bio</th>
                 <td>{{ member.bio }}</td>
             </tr>
+            <tr>
+                <th>Bookshelves</th>
+                <td>{% for bookshelf in member.bookshelf %}
+                    <li><a href="{{ path('app_bookshelf_show', {'id' : bookshelf.id}) }}">{{ bookshelf }}</a></li>
+                {% endfor %}</td>
+            </tr>
+            <tr>
+                <th>Kitchens</th>
+                <td>{% for kitchen in member.kitchens %}
+                        {%  if kitchen.published == true %}
+                        <li><a href="{{ path('app_kitchen_show', {'id' : kitchen.id}) }}">{{ kitchen }}</a></li>
+                        {% endif %}
+                    {% endfor %}</td>
+            </tr>
         </tbody>
     </table>
+
+    <a href="{{ path('app_bookshelf_new', {'id': member.id}) }}">add new bookshelf</a>
 
     <a href="{{ path('app_member_index') }}">back to list</a>
 

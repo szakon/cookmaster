@@ -6,16 +6,35 @@ use App\Entity\Kitchen;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Doctrine\ORM\QueryBuilder;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class KitchenType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $kitchen = $options['data'] ?? null;
+        $member = $kitchen->getOwner();
+
+
         $builder
             ->add('name')
             ->add('published')
-            ->add('Owner')
             ->add('book')
+            ->add('Owner', null, [
+                'disabled'   => true,
+            ])
+            ->add('cookbooks', CookbookType::class, [
+                'class' => Member::class,
+                'query_builder' => function (CookbookRepository $er) use ($member) {
+                    return $er->createQueryBuilder('g')
+                        ->leftJoin('g.bookshelf', 'i')
+                        ->andWhere('i.owner = :member')
+                        ->setParameter('member', $member)
+                        ;
+                }
+            ])
+        ;
         ;
     }
 

@@ -8,11 +8,5 @@ bootstrap_menu:
         kitchens:
           label: 'kitchen'
           route: 'app_kitchen_index'
-        todos:
-          label: 'bookshelves'
-          route: 'app_bookshelf_index'
-        books:
-          label: 'cookbooks'
-          route: 'app_cookbook_index'
 
 

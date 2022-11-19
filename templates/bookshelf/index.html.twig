@@ -30,6 +30,11 @@
         {% endfor %}
         </tbody>
     </table>
-
-    <a href="{{ path('app_bookshelf_new') }}">Create new</a>
+    {% for bookshelf in bookshelves %}
+    <a href="{{ path('app_bookshelf_new', {'id': bookshelf.member.id})}}">Create new</a>
+    {% else %}
+        <tr>
+            <td colspan="3">no records found</td>
+        </tr>
+    {% endfor %}
 {% endblock %}

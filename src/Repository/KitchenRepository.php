@@ -12,7 +12,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Kitchen|null find($id, $lockMode = null, $lockVersion = null)
  * @method Kitchen|null findOneBy(array $criteria, array $orderBy = null)
  * @method Kitchen[]    findAll()
- * @method Kitchen[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Kitchen[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null, $published = true)
  */
 class KitchenRepository extends ServiceEntityRepository
 {

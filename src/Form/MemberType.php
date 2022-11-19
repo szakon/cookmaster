@@ -14,6 +14,8 @@ class MemberType extends AbstractType
         $builder
             ->add('Name')
             ->add('bio')
+            ->add('kitchens')
+            ->add('bookshelf')
         ;
     }
 

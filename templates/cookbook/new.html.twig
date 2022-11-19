@@ -7,5 +7,6 @@
 
     {{ include('cookbook/_form.html.twig') }}
 
-    <a href="{{ path('app_cookbook_index') }}">back to list</a>
+    <a href="{{ path('app_member_show', {'id' : cookbook.shelf.id}) }}">back to member</a>
+
 {% endblock %}

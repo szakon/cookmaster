@@ -9,16 +9,21 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CookbookType extends AbstractType
 {
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+
             ->add('title')
             ->add('author')
             ->add('cuisine')
             ->add('year')
             ->add('shelf')
             ->add('cuisinetype')
-            ->add('kitchens')
+            //->add('kitchens')
+            ->add('kitchens', null, [
+                'disabled'   => true,
+            ])
         ;
     }
 

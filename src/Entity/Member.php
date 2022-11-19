@@ -21,7 +21,7 @@ class Member
     #[ORM\Column(length: 255)]
     private ?string $bio = null;
 
-    #[ORM\OneToMany(mappedBy: 'memberOld', targetEntity: Bookshelf::class, orphanRemoval: true, cascade: ["persist"])]
+    #[ORM\OneToMany(mappedBy: 'member', targetEntity: Bookshelf::class, orphanRemoval: true, cascade: ["persist"])]
     private Collection $bookshelf;
 
     #[ORM\OneToMany(mappedBy: 'Owner', targetEntity: Kitchen::class)]

@@ -13,7 +13,9 @@ class BookshelfType extends AbstractType
     {
         $builder
             ->add('shelf')
-            ->add('member')
+            ->add('member', null, [
+                'disabled'   => true,
+            ])
         ;
     }
 

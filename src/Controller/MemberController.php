@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Member;
 use App\Form\MemberType;
 use App\Repository\MemberRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -30,7 +31,7 @@ class MemberController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $memberRepository->add($member, true);
+            $memberRepository->save($member, true);
 
             return $this->redirectToRoute('app_member_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -76,5 +77,21 @@ class MemberController extends AbstractController
         }
 
         return $this->redirectToRoute('app_member_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/{member_id}/bookshelf/{bookshelf_id}', name: "app_member_bookshelf_show", methods:['GET'])]
+    #[ParamConverter('member', options: ['id' => 'member_id'])]
+    #[ParamConverter('bookshelf', options: ['id' => 'bookshelf_id'])]
+    public function bookshelfShow(member $member, bookshelf $bookshelf): Response
+    {
+        if(! $member->getbookshelfs()->contains($bookshelf)) {
+            throw $this->createNotFoundException("Couldn't find such a bookshelf in this member!");
+        }
+
+
+        return $this->render('member/bookshelf_show.html.twig', [
+            'bookshelf' => $bookshelf,
+            'member' => $member
+        ]);
     }
 }
