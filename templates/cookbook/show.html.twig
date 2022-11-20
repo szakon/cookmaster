@@ -31,9 +31,9 @@
     </table>
 
 
-    <a href="{{ path('app_member_show', {'id' : cookbook.member.id}) }}">back to member</a>
+    <p><a href="{{ path('app_member_show', {'id' : cookbook.member.id}) }}">back to member</a></p>
 
-    <a href="{{ path('app_cookbook_edit', {'id': cookbook.id}) }}">edit</a>
+    <p><a href="{{ path('app_cookbook_edit', {'id': cookbook.id}) }}">edit</a></p>
 
     {{ include('cookbook/_delete_form.html.twig') }}
 {% endblock %}

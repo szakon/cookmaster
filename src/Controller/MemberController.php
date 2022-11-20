@@ -110,21 +110,4 @@ class MemberController extends AbstractController
             'member' => $member
         ]);
     }
-
-
-    #[Route('/{member_id}/kitchen/{kitchen_id}', name: "app_member_kitchen_show", methods:['GET'])]
-    #[ParamConverter('member', options: ['id' => 'member_id'])]
-    #[ParamConverter('kitchen', options: ['id' => 'kitchen_id'])]
-    public function kitchenShow(member $member, kitchen $kitchen): Response
-    {
-        if(! $member->getkitchens()->contains($kitchen)) {
-            throw $this->createNotFoundException("Couldn't find such a kitchen in this member!");
-        }
-
-
-        return $this->render('member/kitchen_show.html.twig', [
-            'kitchen' => $kitchen,
-            'member' => $member
-        ]);
-    }
 }

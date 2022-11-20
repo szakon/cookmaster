@@ -30,7 +30,7 @@
     <p><a href="{{ path('app_cookbook_new', {'id': bookshelf.member.id})}}"> add book </a></p>
     <p><a href="{{ path('app_member_show', {'id' : bookshelf.member.id}) }}"> back to member </a></p>
 
-    <a href="{{ path('app_bookshelf_edit', {'id': bookshelf.id}) }}">edit</a>
+    <p><a href="{{ path('app_bookshelf_edit', {'id': bookshelf.id}) }}">edit</a></p>
 
     {{ include('bookshelf/_delete_form.html.twig') }}
 {% endblock %}

@@ -3,19 +3,20 @@
 namespace App\Form;
 
 use App\Entity\Kitchen;
+use App\Entity\Cookbook;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Doctrine\Common\Collections\ArrayCollection;
 
 class KitchenType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        /*$kitchen = $options['data'] ?? null;
+        $kitchen = $options['data'] ?? null;
         $member = $kitchen->getOwner();
-        $id = $member->getId();*/
+        $books = $member->getCookbooks();
 
 
         $builder
@@ -25,23 +26,7 @@ class KitchenType extends AbstractType
             ->add('Owner', null, [
                 'disabled'   => true,
             ])
-            /*->add('book', CookbookType::class, [
-                'class' => Member::class,
-                'choices' => $group->getMember()->findBy(['id' => $id])
-                ]
-            )
 
-
-            ->add('book', CookbookType::class, [
-                'class' => Member::class,
-                'query_builder' => function (CookbookRepository $er) use ($member) {
-                    return $er->createQueryBuilder('g')
-                        ->leftJoin('g.bookshelf', 'i')
-                        ->andWhere('i.owner = :member')
-                        ->setParameter('member', $member)
-                        ;
-                }
-            ])*/
         ;
 
     }

@@ -27,7 +27,7 @@ class KitchenController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'app_kitchen_new', methods: ['GET', 'POST'])]
+    #[Route('/new/{id}', name: 'app_kitchen_new', methods: ['GET', 'POST'])]
     public function new(Request $request, KitchenRepository $kitchenRepository, Member $member): Response
     {
         $kitchen = new Kitchen();
@@ -35,10 +35,12 @@ class KitchenController extends AbstractController
         $form = $this->createForm(KitchenType::class, $kitchen);
         $form->handleRequest($request);
 
+        $id = $member->getId();
+
         if ($form->isSubmitted() && $form->isValid()) {
             $kitchenRepository->add($kitchen, true);
 
-            return $this->redirectToRoute('app_kitchen_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_member_show', ['id' => $id], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('kitchen/new.html.twig', [

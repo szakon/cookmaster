@@ -7,5 +7,5 @@
 
     {{ include('kitchen/_form.html.twig') }}
 
-    <a href="{{ path('app_kitchen_index') }}">back to list</a>
+    <a href="{{ path('app_member_show', {'id' : kitchen.owner.id}) }}"> back to member </a>
 {% endblock %}
