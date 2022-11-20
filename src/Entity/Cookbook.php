@@ -37,6 +37,10 @@ class Cookbook
     #[ORM\ManyToMany(targetEntity: Kitchen::class, mappedBy: 'book')]
     private $kitchens;
 
+    #[ORM\ManyToOne(targetEntity: Member::class, inversedBy: 'cookbooks')]
+    #[ORM\JoinColumn(nullable: false)]
+    private $member;
+
     public function __construct()
     {
         $this->cuisinetype = new ArrayCollection();
@@ -159,6 +163,18 @@ class Cookbook
         if ($this->kitchens->removeElement($kitchen)) {
             $kitchen->removeBook($this);
         }
+
+        return $this;
+    }
+
+    public function getMember(): ?Member
+    {
+        return $this->member;
+    }
+
+    public function setMember(?Member $member): self
+    {
+        $this->member = $member;
 
         return $this;
     }

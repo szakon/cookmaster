@@ -5,8 +5,7 @@
 {% block body %}
     <h1>Create new Cookbook</h1>
 
-    {{ include('cookbook/_form.html.twig') }}
+    {{ include('bookshelf/_form.html.twig') }}
 
-    <a href="{{ path('app_member_show', {'id' : cookbook.shelf.id}) }}">back to member</a>
-
+    <a href="{{ path('app_member_index')}}"> back to member </a>
 {% endblock %}

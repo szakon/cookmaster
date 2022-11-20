@@ -27,10 +27,14 @@ class Member
     #[ORM\OneToMany(mappedBy: 'Owner', targetEntity: Kitchen::class)]
     private $kitchens;
 
+    #[ORM\OneToMany(mappedBy: 'member', targetEntity: Cookbook::class, orphanRemoval: true)]
+    private $cookbooks;
+
     public function __construct()
     {
         $this->bookshelf = new ArrayCollection();
         $this->kitchens = new ArrayCollection();
+        $this->cookbooks = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -119,6 +123,36 @@ class Member
             // set the owning side to null (unless already changed)
             if ($kitchen->getOwner() === $this) {
                 $kitchen->setOwner(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Cookbook>
+     */
+    public function getCookbooks(): Collection
+    {
+        return $this->cookbooks;
+    }
+
+    public function addCookbook(Cookbook $cookbook): self
+    {
+        if (!$this->cookbooks->contains($cookbook)) {
+            $this->cookbooks[] = $cookbook;
+            $cookbook->setMember($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCookbook(Cookbook $cookbook): self
+    {
+        if ($this->cookbooks->removeElement($cookbook)) {
+            // set the owning side to null (unless already changed)
+            if ($cookbook->getMember() === $this) {
+                $cookbook->setMember(null);
             }
         }
 

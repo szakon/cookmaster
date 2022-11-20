@@ -33,12 +33,22 @@
                         {% endif %}
                     {% endfor %}</td>
             </tr>
+            <tr>
+                <th>Cookbooks</th>
+                <td>{% for cookbook in member.cookbooks %}
+                            <li><a href="{{ path('app_cookbook_show', {'id' : cookbook.id}) }}">{{ cookbook }}</a></li>
+                    {% endfor %}</td>
+            </tr>
         </tbody>
     </table>
 
-    <a href="{{ path('app_bookshelf_new', {'id': member.id}) }}">add new bookshelf</a>
+    <p><a href="{{ path('app_cookbook_new', {'id': member.id}) }}">new cookbook</a></p>
 
-    <a href="{{ path('app_member_index') }}">back to list</a>
+    <p><a href="{{ path('app_bookshelf_new', {'id': member.id}) }}">new bookshelf</a></p>
+
+    <p><a href="{{ path('app_kitchen_new', {'id': member.id}) }}">new kitchen</a></p>
+
+    <p><a href="{{ path('app_member_index') }}">back to list</a></p>
 
     <a href="{{ path('app_member_edit', {'id': member.id}) }}">edit</a>
 

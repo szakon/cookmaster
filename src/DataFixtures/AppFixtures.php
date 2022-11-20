@@ -42,15 +42,15 @@ class AppFixtures extends Fixture
     private static function cookbookDataGenerator()
     {
         //yield [shelf, title, author, cuisine, year]
-        yield ["Thais", "My favorites",  "Instant pot", "smith", "Comfort", 2018, "Home"];
-        yield ["Thais", "My favorites", "MOMOFUKU", "David Chang", "Noodles", 2010, "Home"];
-        yield ["Thais", "My comfort food", "Made in inda", "Meera Sodha", "Indian", 2014, "Home"];
-        yield ["Lou Anne", "Used daily", "Pinch of nom", "Catherine Allinson", "Comfort", 2021, "Cookit"];
-        yield ["Lou Anne", "Used daily", "Jane's patisserie", "Jane Dunn", "Pastry", 2021, "Cookit"];
-        yield ["Lou Anne", "For special occasions", "Season", "Nik Sharma", "Indian", 2018, "Cookit"];
-        yield ["Sarah", "Banger", "Nopalito", "Gonzalo Guzman", "Mexican", 2017, "Sarah's"];
-        yield ["Sarah", "Banger", "The Silver spoon", "Domus", "Italian", 1950, "Sarah's"];
-        yield ["Sarah", "Fancy", "Ramen Otaku", "Sarah Gavigan", "Noodles", 2018, "Sarah's"];
+        yield ["Thais", "Thais", "My favorites",  "Instant pot", "smith", "Comfort", 2018, "Home"];
+        yield ["Thais", "Thais", "My favorites", "MOMOFUKU", "David Chang", "Noodles", 2010, "Home"];
+        yield ["Thais", "Thais", "My comfort food", "Made in inda", "Meera Sodha", "Indian", 2014, "Home"];
+        yield ["Lou Anne", "Lou Anne", "Used daily", "Pinch of nom", "Catherine Allinson", "Comfort", 2021, "Cookit"];
+        yield ["Lou Anne", "Lou Anne", "Used daily", "Jane's patisserie", "Jane Dunn", "Pastry", 2021, "Cookit"];
+        yield ["Lou Anne", "Lou Anne", "For special occasions", "Season", "Nik Sharma", "Indian", 2018, "Cookit"];
+        yield ["Sarah", "Sarah", "Banger", "Nopalito", "Gonzalo Guzman", "Mexican", 2017, "Sarah's"];
+        yield ["Sarah", "Sarah", "Banger", "The Silver spoon", "Domus", "Italian", 1950, "Sarah's"];
+        yield ["Sarah", "Sarah", "Fancy", "Ramen Otaku", "Sarah Gavigan", "Noodles", 2018, "Sarah's"];
 
 
     }
@@ -115,7 +115,7 @@ class AppFixtures extends Fixture
             $member->addKitchen($kitchen);
         }*/
 
-        foreach(self::cookbookDataGenerator() as [$name, $shelf, $title, $author, $cuisine, $year, $kname]) {
+        foreach(self::cookbookDataGenerator() as [$member, $name, $shelf, $title, $author, $cuisine, $year, $kname]) {
 
             $member = $memberRepo->findOneBy(['Name' => $name]);
             $bookshelf = $bookshelfRepo->findOneBy(['member' => $member, 'shelf' => $shelf]);
@@ -126,10 +126,13 @@ class AppFixtures extends Fixture
             $book->setAuthor($author);
             $book->setCuisine($cuisine);
             $book->setYear($year);
+            $book->setMember($member);
             //$kitchen->addCookbook($book);
             $type->addCookbook($book);
             $bookshelf->addCookbook($book);
             //$manager->persist($kitchen);
+            $member->addCookbook($book);
+            $manager->persist($member);
             $manager->persist($type);
             $manager->persist($bookshelf);
         }

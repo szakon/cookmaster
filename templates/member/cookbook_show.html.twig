@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Bookshelf{% endblock %}
+
+{% block body %}
+    <h1>Bookshelf</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ bookshelf.id }}</td>
+            </tr>
+            <tr>
+                <th>Title</th>
+                <td>{{ bookshelf.title }}</td>
+            </tr>
+            <tr>
+                <th>Author</th>
+                <td>{{ bookshelf.author }}</td>
+            </tr>
+            <tr>
+                <th>Cuisine</th>
+                <td>{{ bookshelf.cuisine }}</td>
+            </tr>
+            <tr>
+                <th>Year</th>
+                <td>{{ bookshelf.year }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_member_show', { 'id': member.id}) }}">back to member</a>
+
+
+    <a href="{{ path('app_bookshelf_edit', {'id': bookshelf.id}) }}">edit</a>
+
+    {{ include('bookshelf/_delete_form.html.twig') }}
+{% endblock %}

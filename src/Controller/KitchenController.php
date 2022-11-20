@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Kitchen;
 use App\Entity\Cookbook;
 use App\Form\KitchenType;
+use App\Entity\Member;
 use App\Repository\KitchenRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,9 +28,10 @@ class KitchenController extends AbstractController
     }
 
     #[Route('/new', name: 'app_kitchen_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, KitchenRepository $kitchenRepository): Response
+    public function new(Request $request, KitchenRepository $kitchenRepository, Member $member): Response
     {
         $kitchen = new Kitchen();
+        $kitchen->setOwner($member);
         $form = $this->createForm(KitchenType::class, $kitchen);
         $form->handleRequest($request);
 

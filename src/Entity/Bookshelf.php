@@ -90,6 +90,6 @@ class Bookshelf
     }
 
     public function __toString() {
-        return "This is the shelf: " . $this->shelf;
+        return  $this->shelf;
     }
 }

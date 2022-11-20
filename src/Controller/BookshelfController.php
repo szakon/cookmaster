@@ -55,13 +55,14 @@ class BookshelfController extends AbstractController
     #[Route('/{id}/edit', name: 'app_bookshelf_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Bookshelf $bookshelf, EntityManagerInterface $entityManager): Response
     {
+        $id = $bookshelf->getId();
         $form = $this->createForm(BookshelfType::class, $bookshelf);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_bookshelf_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_bookshelf_show', ['id' => $id], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('bookshelf/edit.html.twig', [

@@ -79,6 +79,22 @@ class MemberController extends AbstractController
         return $this->redirectToRoute('app_member_index', [], Response::HTTP_SEE_OTHER);
     }
 
+    #[Route('/{member_id}/cookbook/{cookbook_id}', name: "app_member_cookbook_show", methods:['GET'])]
+    #[ParamConverter('member', options: ['id' => 'member_id'])]
+    #[ParamConverter('cookbook', options: ['id' => 'cookbook_id'])]
+    public function cookbookShow(member $member, cookbook $cookbook): Response
+    {
+        if(! $member->getcookbooks()->contains($cookbook)) {
+            throw $this->createNotFoundException("Couldn't find such a cookbook in this member!");
+        }
+
+
+        return $this->render('member/cookbook_show.html.twig', [
+            'cookbook' => $cookbook,
+            'member' => $member
+        ]);
+    }
+
     #[Route('/{member_id}/bookshelf/{bookshelf_id}', name: "app_member_bookshelf_show", methods:['GET'])]
     #[ParamConverter('member', options: ['id' => 'member_id'])]
     #[ParamConverter('bookshelf', options: ['id' => 'bookshelf_id'])]
@@ -91,6 +107,23 @@ class MemberController extends AbstractController
 
         return $this->render('member/bookshelf_show.html.twig', [
             'bookshelf' => $bookshelf,
+            'member' => $member
+        ]);
+    }
+
+
+    #[Route('/{member_id}/kitchen/{kitchen_id}', name: "app_member_kitchen_show", methods:['GET'])]
+    #[ParamConverter('member', options: ['id' => 'member_id'])]
+    #[ParamConverter('kitchen', options: ['id' => 'kitchen_id'])]
+    public function kitchenShow(member $member, kitchen $kitchen): Response
+    {
+        if(! $member->getkitchens()->contains($kitchen)) {
+            throw $this->createNotFoundException("Couldn't find such a kitchen in this member!");
+        }
+
+
+        return $this->render('member/kitchen_show.html.twig', [
+            'kitchen' => $kitchen,
             'member' => $member
         ]);
     }

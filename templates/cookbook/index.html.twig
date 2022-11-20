@@ -36,6 +36,13 @@
         {% endfor %}
         </tbody>
     </table>
+    {% for cookbook in cookbooks %}
+        <a href="{{ path('app_cookbook_new', {'id': cookbook.member.id})}}">Create new</a>
+    {% else %}
+        <tr>
+            <td colspan="3">no records found</td>
+        </tr>
+    {% endfor %}
 
-    <a href="{{ path('app_cookbook_new') }}">Create new</a>
+
 {% endblock %}
